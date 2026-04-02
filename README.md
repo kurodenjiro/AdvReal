@@ -40,31 +40,9 @@ The model are shared by [Google Drive](https://drive.google.com/file/d/1EwAvmoie
 [https://drive.google.com/file/d/1nfmIO8ZNNh730RUaqTzyB8Qh8oJZVp27/view?usp=drive_link](https://drive.google.com/file/d/12LHfxYsWwepFuApFA56OygWpfI-cxv0m/view?usp=drive_link)
 ```
 
-Download the YOLOv2 weight file, and place it in /yolov2/
-
-```
-[[https://drive.google.com/file/d/1nfmIO8ZNNh730RUaqTzyB8Qh8oJZVp27/view?usp=drive_link](https://drive.google.com/file/d/12LHfxYsWwepFuApFA56OygWpfI-cxv0m/view?usp=drive_link)](https://drive.google.com/file/d/1t4Sd-Jmy2WFlqNJhbouU0_a4KZFTN0Wn/view?usp=drive_link)
-```
-
-If you are going to use yolov3, you need to download its weights by running
-```
-./arch/weights/download_weights.sh
-```
 ### 3. Train
 We provide the command to optimize AdvReal for different target detectors.
 
-##### YOLOv2
-```
-python train.py --nepoch 800 --save_path 'results/yolov2' --arch "yolov2" --cfg configs/baseline/v2.yaml --seed_type fixed --loss_type max_iou
-```
-##### YOLOv3
-```
-python train.py --nepoch 800 --save_path 'results/yolov3' --arch "yolov3" --cfg configs/baseline/v3.yaml --seed_type fixed --loss_type max_iou
-```
-##### YOLOv5
-```
-python train.py --nepoch 800 --save_path 'results/yolov5' --arch "yolov5" --cfg configs/baseline/v5.yaml --seed_type fixed --loss_type max_iou
-```
 ##### Faster-RCNN
 ```
 python train.py --nepoch 800 --save_path 'results/rcnn' --arch "rcnn" --cfg configs/baseline/faster_rcnn.yaml --seed_type fixed --loss_type max_iou
@@ -74,19 +52,23 @@ python train.py --nepoch 800 --save_path 'results/rcnn' --arch "rcnn" --cfg conf
 python train.py --nepoch 800 --save_path 'results/ddetr' --arch "deformable-detr" --cfg configs/baseline/ddetr.yaml --seed_type fixed --loss_type max_iou
 ```
 
+### 4. Google Colab
+A standalone Colab notebook for the official Ultralytics YOLO26 workflow is included at `YOLO26_Colab.ipynb`.
+
+Use it together with `requirements-colab.txt`. The notebook installs `ultralytics`, mounts Google Drive, loads a YOLO26 checkpoint such as `yolo26n.pt`, and runs training, validation, prediction, and export through the official API.
+
+Expected Drive layout:
+```
+MyDrive/AdvReal/
+  requirements-colab.txt
+  data.yaml
+  test-images/
+  runs/
+```
+
+This notebook is separate from this repository's legacy `train.py` pipeline. The current local training code supports `rcnn`, `detr`, `deformable-detr`, and `mask_rcnn`, while the Colab notebook follows the official Ultralytics YOLO26 package workflow.
+
 ## Patches that can be used for comparative testing
-
-### AdvReal (YOLO-v2)
-
-<img src="Images/AdvReal_YOLOv2.png" width="300" alt="Cover Page">
-
-### AdvReal (YOLO-v3)
-
-<img src="Images/AdvReal_YOLOv3.png" width="300" alt="Cover Page">
-
-### AdvReal (YOLO-v5)
-
-<img src="Images/AdvReal_YOLOv5.png" width="300" alt="Cover Page">
 
 ### AdvReal (Faster-RCNN)
 

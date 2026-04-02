@@ -28,8 +28,6 @@ from utils.plot import VisualBoard
 from torch.utils.data import DataLoader
 from utils.utils import *
 sys.path.append(os.path.abspath(''))
-from arch.yolov3_models import YOLOv3Darknet
-from yolo2.darknet import Darknet
 from color_util import *
 from render import ImageRenderer
 def init(detector_attacker: UniversalAttacker, cfg: ConfigParser, data_root: str, args: object =None, log: bool =True):
@@ -75,31 +73,11 @@ class PatchTrainer(object):
 
         if args.arch == "rcnn":
             self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True).eval().to(device)
-        elif args.arch == "yolov3":
-            self.model = YOLOv3Darknet().eval().to(device)
-            self.model.load_darknet_weights('arch/weights/yolov3.weights')
         elif args.arch == "detr":
             self.model = torch.hub.load('facebookresearch/detr:main', 'detr_resnet50', pretrained=True).eval().to(
                 device)
         elif args.arch == "deformable-detr":
             self.model = DeformableDetrForObjectDetection.from_pretrained("SenseTime/deformable-detr").eval().to(device)
-        elif args.arch == "yolov2":
-            self.model = Darknet('yolo2/cfg/yolov2.cfg').eval().to(device)
-            self.model.load_weights('yolo2/yolov2.weights')
-        elif args.arch == "yolov5":
-            from detlib.HHDet.yolov5.api import HHYolov5
-            cfg = ConfigParser("configs/baseline/v5.yaml")
-            detector_cfg = cfg.DETECTOR 
-            input_size = self.img_size
-            self.model = HHYolov5(name="YOLOV5", 
-                                cfg=detector_cfg,  
-                                input_tensor_size=input_size,
-                                device=device)
-            model_weights = 'detlib/HHDet/yolov5/yolov5/weight/yolov5s.pt'
-            model_config = 'detlib/HHDet/yolov5/yolov5/models_v5/yolov5s.yaml'
-            self.model.load(model_weights, model_config=model_config)
-            self.model.eval()
-            self.model_parameters = self.model.parameters()
         elif args.arch == "mask_rcnn":
             self.model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True).eval().to(device)
         else:
@@ -113,14 +91,8 @@ class PatchTrainer(object):
         self.patch_transformer = PatchTransformer().to(device)
         if args.arch == "rcnn":
             self.prob_extractor = MaxProbExtractor(0, 80).to(device)
-        elif args.arch == "yolov2":
-            self.prob_extractor = YOLOv2MaxProbExtractor(0, 80, self.model, self.img_size).to(device)
-        elif args.arch == "yolov3":
-            self.prob_extractor = YOLOv3MaxProbExtractor(0, 80, self.model, self.img_size).to(device)
         elif args.arch == "deformable-detr":
             self.prob_extractor = DeformableDetrProbExtractor(0,80,self.img_size).to(device)
-        elif args.arch == "yolov5":
-            self.prob_extractor = YOLOv5MaxProbExtractor(0, 80, self.model, self.img_size).to(device)
         self.tv_loss = TotalVariation()
 
         self.train_loader = get_nuscenes_loader(
@@ -340,7 +312,7 @@ if __name__ == '__main__':
     parser.add_argument("--patch_loss", type=float, default=0.5, help='patch loss weight')
     parser.add_argument("--lr_decay", type=float, default=1.1, help='')
     parser.add_argument("--lr_decay_seed", type=float, default=2, help='')
-    parser.add_argument("--arch", type=str, default="yolov2", help='deformable-detr')
+    parser.add_argument("--arch", type=str, default="rcnn", help='rcnn, detr, deformable-detr, mask_rcnn')
     parser.add_argument("--seed_type", default='fixed', help='')
     parser.add_argument("--clamp_shift", type=float, default=0, help='')
     parser.add_argument("--resample_type", default=None, help='')

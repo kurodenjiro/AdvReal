@@ -16,9 +16,7 @@ The label path tree should like the follows:
 │   ├── ssd-rescale-labels
 │   ├── yolov3-rescale-labels
 │   ├── yolov3-tiny-rescale-labels
-│   ├── yolov4-rescale-labels
-│   ├── yolov4-tiny-rescale-labels
-│   └── yolov5-rescale-labels
+│   └── rescale-labels
 ```
 The 'ground-truth' is the annotation labels, while the others are from clean detections of given detectors.
 This is for different standards to compute mAP.
