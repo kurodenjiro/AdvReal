@@ -55,12 +55,11 @@ python train.py --nepoch 800 --save_path 'results/ddetr' --arch "deformable-detr
 ### 4. Google Colab
 A standalone Colab notebook for the official Ultralytics YOLO26 workflow is included at `YOLO26_Colab.ipynb`.
 
-Use it together with `requirements-colab.txt`. The notebook installs `ultralytics`, mounts Google Drive, loads a YOLO26 checkpoint such as `yolo26n.pt`, and runs training, validation, prediction, and export through the official API.
+The notebook clones this repository in Colab, installs dependencies from `requirements-colab.txt`, mounts Google Drive, loads a YOLO26 checkpoint such as `yolo26n.pt`, and runs training, validation, prediction, and export through the official API.
 
 Expected Drive layout:
 ```
 MyDrive/AdvReal/
-  requirements-colab.txt
   data.yaml
   test-images/
   runs/
